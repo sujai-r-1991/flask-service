@@ -131,7 +131,7 @@ curl http://localhost:8000/api/status
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/sujai-r-1991/flask-service.git
+git clone <your-repository-url>
 cd flask-service
 ```
 

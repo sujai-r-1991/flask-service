@@ -28,7 +28,7 @@ proc_name = 'flask-service'
 # Server mechanics
 daemon = False
 pidfile = None
-umask = 0
+umask = 0o022
 user = None
 group = None
 tmp_upload_dir = None

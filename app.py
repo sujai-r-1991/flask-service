@@ -52,7 +52,9 @@ def hello():
     Optionally accepts a 'name' query parameter.
     """
     name = request.args.get('name', 'World')
-    logger.info(f"Hello endpoint called with name: {name}")
+    # Sanitize name for logging - limit length and remove newlines
+    safe_name = name[:50].replace('\n', '').replace('\r', '') if name else 'World'
+    logger.info(f"Hello endpoint called with name: {safe_name}")
     
     return jsonify({
         'status': 'success',
@@ -76,7 +78,8 @@ def echo():
                 'message': 'No JSON payload provided'
             }), 400
         
-        logger.info(f"Echo endpoint called with data: {data}")
+        # Log metadata instead of full payload to avoid sensitive data in logs
+        logger.info(f"Echo endpoint called with {len(str(data))} bytes of data")
         
         return jsonify({
             'status': 'success',
@@ -85,11 +88,10 @@ def echo():
             'timestamp': datetime.utcnow().isoformat()
         })
     except Exception as e:
-        logger.error(f"Error in echo endpoint: {str(e)}")
+        logger.error(f"Error in echo endpoint: {type(e).__name__}")
         return jsonify({
             'status': 'error',
-            'message': 'Invalid JSON payload',
-            'error': str(e)
+            'message': 'Invalid JSON payload'
         }), 400
 
 
